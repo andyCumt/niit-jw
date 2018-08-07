@@ -1,0 +1,235 @@
+package com.niit.controller;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.niit.core.common.Constants;
+import com.niit.core.vo.DataGridResult;
+import com.niit.core.vo.DataResult;
+import com.niit.entity.Resource;
+import com.niit.service.ResourceService;
+
+/**
+ *@CLassName: ResourceController
+ *@Description: 资源控制器
+ *@Author andy
+ */
+@RequestMapping("/resource")
+@Controller
+public class ResourceController {
+	
+	/*注入业务层ResourceService*/
+	@Autowired
+	private ResourceService resourceService;
+	
+	
+	/**
+	 *权限模块登陆成功，页面跳转reosurce.jsp
+	 */
+	@RequestMapping(value="/toResource")
+	public String toResource(){
+		return "resource/resource";
+	}
+	
+	
+	/**
+	 *分页查询获取数据
+	 */
+	@RequestMapping(value="/selectResource")
+	@ResponseBody
+	public DataGridResult selectResource(@RequestParam(value = "page" ,required=true,defaultValue="1") Integer pageNum ,
+			                @RequestParam(value = "rows" ,required=true,defaultValue="5") Integer pageSize,
+			                @RequestParam Map<String, Object> map){
+		Resource resource = new Resource();
+		String parentCode = (String) map.get("parentCode");
+		if (parentCode == null) {
+			parentCode ="";
+		}
+		resource.setCode(parentCode);
+		resource.setLength(parentCode.length()+Constants.CODE_LEN);
+		DataGridResult dataGridResult = resourceService.selectPageInfoByWhere(resource , pageSize, pageNum);
+		return dataGridResult;
+	}
+	
+	
+	/**
+	 *异步加载资源树
+	 */
+	@RequestMapping(value="/loadResourceTree",method = RequestMethod.POST)
+	@ResponseBody
+	public List<Map<String, Object>> loadResourceTree(){
+		//调用业务层分[{id:code,pId;"",name:""},{}]
+		return resourceService.loadResourceTree();
+	}
+	
+	/**
+	 *权限模块登陆成功，页面跳转addResource.jsp
+	 */
+	@RequestMapping(value="/showResourceJob")
+	public ModelAndView showResourceJob(@RequestParam(required=true) String parentCode){
+		ModelAndView m = new ModelAndView("/resource/addResource");
+	    m.addObject("parentCode", parentCode);
+		return m;
+	}
+	
+	/**
+	 *添加资源
+	 */
+	@RequestMapping(value="/addResource",method=RequestMethod.POST)
+	@ResponseBody
+	public DataResult addResource(@RequestParam  Map<String,Object> map){
+		DataResult dataResult = new DataResult();
+		
+	    //获取父节点的code
+		String parentCode = (String) map.get("parentCode");
+		String code = getGenerator(parentCode);
+		try {
+			Resource resource = new Resource();
+			resource.setCode(code);
+			resource.setLength(code.length());
+			resource.setName((String)map.get("name"));
+			resource.setPermission((String)map.get("permission"));
+			resource.setType((String)map.get("type"));
+			resource.setUrl((String)map.get("url"));
+	        resourceService.insertSelective(resource);
+	        dataResult.setTip(1);
+		} catch (Exception e) {
+			dataResult.setTip(0);
+		    e.printStackTrace();
+		}
+	    
+		return dataResult;		
+	}
+	/**生成主键的数据 */
+	public String getGenerator(String parentCode){
+		Integer length = parentCode.length();
+	    Resource resource = new Resource();
+	    resource.setLength(length+Constants.CODE_LEN);
+	    resource.setCode(parentCode);
+		String maxCode = resourceService.getGenerator(resource);
+		//判断父级code是不是null
+	     parentCode = StringUtils.isEmpty(parentCode)?"":parentCode;
+	     //判断最大值是否为空
+	    if( StringUtils.isEmpty(maxCode)){//最大值为空
+	    	//0001/00010001
+	    	String prefix = "";
+	    	for (int i = 1; i < Constants.CODE_LEN; i++) {
+			  prefix += "0";
+			}
+	    	return parentCode+prefix +"1";
+	    }else{//最大值不为空
+	    	//0003--0004  00010009---00010010
+	    	//截取最大代码的后四位
+	    	String suffix = maxCode.substring(maxCode.length()-Constants.CODE_LEN, maxCode.length());
+	    	String tempCode = String.valueOf(Integer.valueOf(suffix)+1);
+	    	if (tempCode.length()>Constants.CODE_LEN) {
+				throw new RuntimeException("主键已生成越界!");
+			}else{
+				return parentCode+suffix.substring(0, Constants.CODE_LEN-tempCode.length())+tempCode;
+			}
+	    }	
+	}
+	
+
+	/**
+	 *权限模块登陆成功，页面跳转updateResource.jsp
+	 */
+	@RequestMapping(value="/showUpdateResource")
+	public ModelAndView showUpdateResource(@RequestParam(required=true) String code){
+		ModelAndView m = new ModelAndView("/resource/updateResource");
+		Resource resource = resourceService.selectByPrimaryKey(code);
+		m.addObject("resource", resource);
+		return m;
+	}	
+	/**
+	 *更新资源
+	 */
+	@RequestMapping(value="/updateResource",method=RequestMethod.POST)
+	@ResponseBody
+	public DataResult updateResource(@RequestParam  Map<String,Object> map){
+		DataResult dataResult = new DataResult();
+		
+	    //获取节点的code
+		String code = (String) map.get("code");
+		try {
+			Resource resource = new Resource();
+			resource.setCode(code);
+			resource.setLength(code.length());
+			resource.setName((String)map.get("name"));
+			resource.setPermission((String)map.get("permission"));
+			resource.setType((String)map.get("type"));
+			resource.setUrl((String)map.get("url"));
+	        resourceService.updateByPrimaryKeySelective(resource);
+	        dataResult.setTip(1);
+		} catch (Exception e) {
+			dataResult.setTip(0);
+		    e.printStackTrace();
+		}
+	    
+		return dataResult;		
+	}
+	
+	/**                            
+	 *删除资源
+	 */
+	@RequestMapping(value="/deleteResource")
+	@ResponseBody
+	public DataResult deleteResource(@RequestParam String codes ){
+		DataResult dataResult = new DataResult();
+		try {       
+		    resourceService.deleteByCode(codes);	
+	        dataResult.setTip(1);       
+		} catch (Exception e) {
+			dataResult.setTip(0);
+		    e.printStackTrace();
+		}
+	    
+		return dataResult;		
+	}
+	
+	/**
+	 *查询所有资源
+	 */	
+	@RequestMapping(value="/selectAllResource")
+	@ResponseBody
+	public  Map<Object, Object> selectAllResource(@RequestParam String roleId){
+		//调用业务层查询所有
+	    Map<Object, Object> map = new HashMap<>();
+	    List<Map<String, Object>> rows = resourceService.selectAllResource(roleId);
+	    map.put("rows", rows);
+		return map;
+	}
+	
+	/**
+	 *绑定资源
+	 */
+	@RequestMapping(value="/bindResource",method=RequestMethod.POST)
+	@ResponseBody
+	public DataResult bindRole(@RequestParam  Map<String,Object> map){
+		DataResult dataResult = new DataResult();
+		try {
+	        resourceService.bingResource(map);
+	        dataResult.setTip(1);
+		} catch (Exception e) {
+			dataResult.setTip(0);
+		    e.printStackTrace();
+		}
+	    
+		return dataResult;		
+	
+	}
+}

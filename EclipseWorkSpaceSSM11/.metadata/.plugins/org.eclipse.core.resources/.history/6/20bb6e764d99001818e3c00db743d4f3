@@ -1,0 +1,14 @@
+package com.niit.service;
+
+import com.niit.entity.Dept;
+
+/**
+ *@CLassName: DeptService
+ *@Description: 部门模块业务层
+ *@Author andy
+ *@CreateDate: 2017年11月29日 下午8:15:58
+ */
+public interface DeptService extends BaseService<Dept> {
+	
+
+}

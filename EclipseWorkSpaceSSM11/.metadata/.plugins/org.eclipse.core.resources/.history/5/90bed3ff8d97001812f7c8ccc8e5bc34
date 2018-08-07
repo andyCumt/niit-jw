@@ -1,0 +1,20 @@
+/**
+ *@Titil: TestService.java
+ *@Package:com.niit.iservice
+ *@Description: TODO
+ *@Author: Andy
+ *@CreateDate: 2018年8月4日 上午10:27:51
+ *@Version: 1.0
+ */
+package com.niit.iservice;
+
+/**
+ * @CLassName: TestService
+ * @Description: TODO
+ * @Author: Andy
+ * @CreateDate: 2018年8月4日 上午10:27:51
+ * @Version: 1.0
+ */
+public interface TestService {
+
+}

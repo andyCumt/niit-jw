@@ -1,0 +1,15 @@
+package com.niit.mapper;
+
+import org.springframework.stereotype.Repository;
+
+/**
+ *@CLassName: TestMapper
+ *@Description:  
+ *@Author andy
+ *@CreateDate: 2017年11月14日 上午8:49:16
+ */
+@Repository("testMapper")
+public interface TestMapper {
+	//查询当前日期
+	public String queryCurrentDate();
+}

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niit.mapper.RoleResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.niit.entity.RoleResourceKey" >
+    <id column="role_id" property="roleId" jdbcType="VARCHAR" />
+    <id column="resource_code" property="resourceCode" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <!-- 根据角色主键查询指定的资源 -->
+  <select id="selectByids" parameterType="com.niit.entity.RoleResourceKey" resultType="com.niit.entity.Resource" >
+    select    r.code,  r.name,  r.type,  r.url,  r.permission
+      from bos_id_role_resource rr
+      left join bos_id_resource  r on rr.resource_code =  r.code
+    <where>
+      <if test="roleId != null" >
+        rr.role_id = #{roleId,jdbcType=VARCHAR}
+      </if>
+     <if test="resourceCode != null" >
+        and rr.resource_code = #{resourceCode,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  
+  <!-- 根据角色主键模糊查询所有的资源 -->
+  <select id="selectByLikeids" parameterType="com.niit.entity.RoleResourceKey" resultType="com.niit.entity.Resource" >
+    select    r.code,  r.name,  r.type,  r.url,  r.permission
+      from bos_id_role_resource rr
+      left join bos_id_resource  r on rr.resource_code =  r.code
+    <where>
+      <if test="roleId != null" >
+        rr.role_id = #{roleId,jdbcType=VARCHAR}
+      </if>
+     <if test="resourceCode != null" >
+        and (rr.resource_code like CONCAT(#{resourceCode,jdbcType=VARCHAR},'%'))
+      </if>
+    </where>
+  </select>
+  
+  <!-- 根据角色主键查询所有的资源 -->
+  <select id="selectByWhere" parameterType="com.niit.entity.RoleResourceKey" resultType="com.niit.entity.Resource" >
+    select    r.code,  r.name,  r.type,  r.url,  r.permission
+      from bos_id_role_resource rr
+      left join bos_id_resource  r on rr.resource_code =  r.code
+    <where>
+       <if test="roleId != null" >
+        rr.role_id = #{roleId,jdbcType=VARCHAR}
+      </if>
+     <if test="resourceCode != null" >
+        and rr.resource_code = #{resourceCode,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  
+  <!-- 根据主键删除实体 -->
+  <delete id="deleteByIds" parameterType="com.niit.entity.RoleResourceKey" >
+    delete from bos_id_role_resource
+    <where>
+     <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=VARCHAR}
+      </if>
+      <if test="resourceCode != null" >
+        and resource_code = #{resourceCode,jdbcType=VARCHAR}
+      </if>
+     </where>  
+  </delete>
+  
+  <!-- 添加实体 -->
+  <insert id="insert" parameterType="com.niit.entity.RoleResourceKey" >
+    insert into bos_id_role_resource (role_id, resource_code)
+    values (#{roleId,jdbcType=VARCHAR}, #{resourceCode,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 选择行添加实体 -->
+  <insert id="insertSelective" parameterType="com.niit.entity.RoleResourceKey" >
+    insert into bos_id_role_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="resourceCode != null" >
+        resource_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceCode != null" >
+        #{resourceCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

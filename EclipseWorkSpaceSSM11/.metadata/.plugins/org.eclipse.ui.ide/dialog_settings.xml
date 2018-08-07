@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="F:\NIIT\个人教学资料\project\参考资料\day71-2【BOS项目第十七天】\code\BOS系统源代码\bos-mysql(myeclipse)\ssh-parent"/>
+			<item value="F:\NIIT\个人教学资料\project\参考资料\day71-2【BOS项目第十七天】\code\BOS系统源代码\bos-mysql(myeclipse)\bos-parent"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+	</section>
+</section>

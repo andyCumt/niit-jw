@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niit.mapper.DeptMapper" >
+
+  <resultMap id="BaseResultMap" type="com.niit.entity.Dept" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!--代码段  -->
+  <sql id="Base_Column_List" >
+    id, name, remark
+  </sql>
+  
+  <!--根据条件查询实体列表-->
+  <select id="selectPageInfoByWhere" resultType="com.niit.entity.Dept" >
+    select
+    <include refid="Base_Column_List" />
+    from bos_id_dept
+    <where>
+      <if test="id != null" >
+        id = #{id,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null" >
+       and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="remark != null" >
+       and remark = #{remark,jdbcType=VARCHAR}
+      </if>
+    </where>
+
+  </select>
+  
+  <!--根据主键id获取实体  -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bos_id_dept
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+    <!--根据名字获取实体  -->
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bos_id_dept
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
+  
+  <!--根据主键id删除实体  -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bos_id_dept
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <!--添加实体  -->
+  <insert id="insert" parameterType="com.niit.entity.Dept" >
+    insert into bos_id_dept (id, name, remark
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <!--选择性添加实体  -->
+  <insert id="insertSelective" parameterType="com.niit.entity.Dept" >
+    insert into bos_id_dept
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!--选择性更新实体  -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.niit.entity.Dept" >
+    update bos_id_dept
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!--更新实体对象  -->
+  <update id="updateByPrimaryKey" parameterType="com.niit.entity.Dept" >
+    update bos_id_dept
+    set name = #{name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

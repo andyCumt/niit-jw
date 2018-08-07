@@ -1,0 +1,45 @@
+package com.niit.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.niit.core.utils.barcode.BarcodeAction;
+import com.niit.core.utils.verify.VerifyAction;
+import com.niit.service.TestService;
+
+/**
+ *@CLassName: VerifyController
+ *@Description: 验证码
+ *@Author andy
+ *@CreateDate: 2017年11月14日 上午11:04:34
+ */
+@RequestMapping("/verify")
+@Controller
+public class VerifyController {
+	
+	/**
+	 *获取验证码
+	 */
+	@RequestMapping("/verify")
+	@ResponseBody
+	public String verify(HttpServletResponse response,HttpServletRequest request) throws Exception{
+		VerifyAction verifyAction = new VerifyAction();
+		return verifyAction.execute(response, request);
+	}
+	
+	/**
+	 *获取二维码
+	 */
+	@RequestMapping("/barcode")
+	@ResponseBody
+	public String barcode(HttpServletResponse response,HttpServletRequest request) throws Exception{
+	     BarcodeAction barcodeAction = new BarcodeAction();
+	     System.out.println("++++++++++++++++++=");
+	     return  barcodeAction.execute(response, request);
+	}
+}

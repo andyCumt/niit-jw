@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.niit</groupId>
+    <artifactId>ssm-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>niit-parent</artifactId>
+  <packaging>pom</packaging>
+  <modules>
+    <!-- 实体模块 -->
+    <module>niit-entity</module>
+    <!-- mapper层 -->
+    <module>niit-mapper</module>
+    <!-- 服务实现层 -->
+    <module>niit-service</module>
+    <!-- 控制层 -->
+    <module>niit-controller</module>
+    <!-- 服务接口层 -->
+    <module>niit-interface</module>
+    <!-- 核心 -->
+    <module>niit-core</module>
+  </modules>
+</project>

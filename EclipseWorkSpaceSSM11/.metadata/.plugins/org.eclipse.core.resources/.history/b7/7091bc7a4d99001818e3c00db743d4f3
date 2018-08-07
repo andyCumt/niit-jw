@@ -1,0 +1,14 @@
+package com.niit.service;
+
+import com.niit.entity.Job;
+
+/**
+ *@CLassName: JobService
+ *@Description: 职位模块业务层
+ *@Author andy
+ *@CreateDate: 2017年11月29日 下午8:15:58
+ */
+public interface JobService extends BaseService<Job> {
+	
+
+}

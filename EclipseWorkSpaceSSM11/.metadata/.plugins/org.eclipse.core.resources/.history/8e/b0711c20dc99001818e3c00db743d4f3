@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- 对象名称版本号 -->
+  <modelVersion>4.0.0</modelVersion>
+  <!--指定父级目录  -->
+  <parent>
+    <groupId>com.niit</groupId>
+    <artifactId>ssm-parent</artifactId>
+    <version>1.0.0-RELEASE</version>
+  </parent>
+  <!-- 指定项目的唯一标识符 -->
+  <artifactId>niit-parent</artifactId>
+  <!-- 版本号SNAPSHOT快照版  RELEASE发行版 -->
+  <version>0.0.1-SNAPSHOT</version>
+  <!-- 打包类型 -->
+  <packaging>pom</packaging>
+ 
+  <!--聚合模块 -->
+  <modules>
+    <!--实体  -->
+  	<module>niit-entity</module>
+  	<!--持久层  -->
+    <module>niit-mapper</module>
+  	<!--服务层 -->
+  	<module>niit-service</module>
+  	<!--接口层  -->
+  	<module>niit-interface</module>
+  	<!--核心  -->
+  	<module>niit-core</module>
+  	<!--控制层 -->
+  	<module>niit-controller</module>
+  	   
+  </modules>
+  
+  <dependencies>  
+   <!-- 日志 -->
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+	</dependency>
+	
+    <!-- Apache工具组件 -->
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-lang3</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-io</artifactId>
+	</dependency>
+		
+  </dependencies>
+  
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<configuration>
+					<path>/</path>
+					<port>8090</port>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+  
+</project>

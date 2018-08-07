@@ -1,0 +1,29 @@
+package com.niit.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.niit.service.TestService;
+
+/**
+ *@CLassName: TestController
+ *@Description: TODO
+ *@Author andy
+ *@CreateDate: 2017年11月14日 上午11:04:34
+ */
+@RequestMapping("/test")
+@Controller
+public class TestController {
+	
+	@Autowired
+	private TestService testService;
+	
+	@RequestMapping("/date")
+	@ResponseBody
+	public String queryCurrentDate(){
+		return testService.queryCurrentDate();
+	}
+	
+}

@@ -1,0 +1,13 @@
+package com.niit.service;
+
+/**
+ *@CLassName: TestService
+ *@Description: TODO
+ *@Author andy
+ *@CreateDate: 2017年11月14日 上午11:00:28
+ */
+public interface TestService {
+	
+    // 查询当前日期
+	public String queryCurrentDate();
+}

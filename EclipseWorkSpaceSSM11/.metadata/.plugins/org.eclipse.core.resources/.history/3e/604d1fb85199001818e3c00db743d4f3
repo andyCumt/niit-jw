@@ -1,0 +1,42 @@
+package com.niit.service;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.niit.core.common.Constants;
+import com.niit.entity.User;
+import com.niit.mapper.DeptMapper;
+
+/**
+ *@CLassName: SystemServiceImpl
+ *@Description: 系统模块实现层
+ *@Author andy
+ *@CreateDate: 2017年12月12日 下午8:17:20
+ */
+@Service("systemService")
+public class SystemServiceImpl  implements SystemService {
+	
+	/*注入mapper接口*/
+	@Autowired
+	private DeptMapper deptMapper;
+
+	@Override
+	public List<Map<String, Object>> loadUserMenu(HttpServletRequest request, HttpServletResponse response) {
+		 try{	
+			 /**从session中获取当前登陆的用户*/
+			 User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);	
+		 }catch(Exception ex){
+			throw new RuntimeException("加载用户的菜单方法出现了异常！", ex);
+		 }
+		 return null;
+	}
+
+
+	
+}

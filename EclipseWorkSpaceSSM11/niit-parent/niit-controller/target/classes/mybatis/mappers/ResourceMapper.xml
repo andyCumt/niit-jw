@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niit.mapper.ResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.niit.entity.Resource" >
+    <id column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="permission" property="permission" jdbcType="VARCHAR" />
+    <result column="length" property="length" jdbcType="TINYINT" />
+  </resultMap>
+  <!-- 代码片段 -->
+  <sql id="Base_Column_List" >
+    code, name, type, url, permission
+  </sql>
+  
+  <!--根据主键获取实体  -->
+  <select id="selectAllByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bos_id_resource
+    where code like CONCAT(#{code,jdbcType=VARCHAR},'%')
+  </select>
+  
+  <!--获取主键最大值-->
+  <select id="getGenerator" parameterType ="com.niit.entity.Resource" resultType="string" >
+    select
+      max(code)
+    from bos_id_resource
+    <where>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="code != null" >
+        and (code like CONCAT('',#{code,jdbcType=VARCHAR},'%'))
+      </if>
+      <if test="length != null" >
+        and length = #{length,jdbcType=TINYINT}
+      </if>
+      <if test="type != null" >
+        and type = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="url != null" >
+        and url = #{url,jdbcType=VARCHAR}
+      </if>
+      <if test="permission != null" >
+        and permission = #{permission,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  
+   <!--查询所有的资源按照主键倒叙-->
+  <select id="selectAllOrderByCode" resultType="hashMap" >
+    select
+       code as id,name as name,type as type, url as url, permission as permission
+    from bos_id_resource
+       order by code asc
+  </select>
+  
+    <!--根据条件查询实体列表-->
+  <select id="selectPageInfoByWhere" parameterType ="com.niit.entity.Resource" resultType="com.niit.entity.Resource" >
+    select
+    <include refid="Base_Column_List" />
+    from bos_id_resource
+    <where>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="code != null" >
+        and (code like CONCAT('',#{code,jdbcType=VARCHAR},'%'))
+      </if>
+      <if test="length != null" >
+        and length = #{length,jdbcType=TINYINT}
+      </if>
+      <if test="type != null" >
+        and type = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="url != null" >
+        and url = #{url,jdbcType=VARCHAR}
+      </if>
+      <if test="permission != null" >
+        and permission = #{permission,jdbcType=VARCHAR}
+      </if>
+    </where>
+     order by code asc
+  </select>
+  
+   <!--根据主键获取实体  -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bos_id_resource
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  
+   <!--根据名字获取实体  -->
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bos_id_resource
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <!-- 根据主键删除实体 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bos_id_resource
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  
+  
+   <!-- 添加实体 -->
+  <insert id="insert" parameterType="com.niit.entity.Resource" >
+    insert into bos_id_resource (code, name, type, 
+      url, permission, length
+      )
+    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}, #{length,jdbcType=TINYINT}
+      )
+  </insert>
+  
+  <!-- 选择性添加实体 -->
+  <insert id="insertSelective" parameterType="com.niit.entity.Resource" >
+    insert into bos_id_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="permission != null" >
+        permission,
+      </if>
+      <if test="length != null" >
+        length,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null" >
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null" >
+        #{length,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <!--根据主键选择性更新实体  -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.niit.entity.Resource" >
+    update bos_id_resource
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null" >
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null" >
+        length = #{length,jdbcType=TINYINT},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+   <!-- 根据主键更新实体 -->
+  <update id="updateByPrimaryKey" parameterType="com.niit.entity.Resource" >
+    update bos_id_resource
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      permission = #{permission,jdbcType=VARCHAR},
+      length = #{length,jdbcType=TINYINT}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>
